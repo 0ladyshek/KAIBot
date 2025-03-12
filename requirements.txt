@@ -1,0 +1,5 @@
+aiogram==2.25.2
+asyncmy
+lxml
+beautifulsoup4
+devtools
