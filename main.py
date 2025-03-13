@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=api_token) 
 dp = Dispatcher(bot, storage=MemoryStorage())
 dp.middleware.setup(CheckGroupNumber())
-#dp.middleware.setup(ChannelSubscribe())
+dp.middleware.setup(ChannelSubscribe())
 
 for module in modules:
     logging.warning(f"Register module {module.__name__}")

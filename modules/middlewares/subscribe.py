@@ -12,7 +12,8 @@ class ChannelSubscribe(BaseMiddleware):
         super(ChannelSubscribe, self).__init__()
 
     async def on_pre_process_message(self, message: types.Message, data: dict):
-        channel_name = await maria.get_setting("channel")
+        #channel_name = await maria.get_setting("channel")
+        channel_name = "@botkainews"
         if not channel_name: return
         if not channel_name.startswith("@"): channel_name = f"@{channel_name}"
         if not (await message.bot.get_chat_member(channel_name, message.from_user.id)).is_chat_member():
