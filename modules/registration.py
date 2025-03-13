@@ -28,6 +28,7 @@ async def registration_guest_group(message: types.Message, state: FSMContext):
         return await message.answer("Вы ввели неверный номер группы")
     await maria.update_group_number(message.from_user.id, message.text)
     await message_edit.delete()
+    await state.finish()
     await message.answer(f"Готово! Теперь вы можете пользоваться ботом", reply_markup=keyboard_main)
     
 #text="registration|student"
