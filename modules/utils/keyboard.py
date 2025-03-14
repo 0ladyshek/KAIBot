@@ -10,6 +10,14 @@ async def keyboard_back(data: str) -> InlineKeyboardMarkup:
     keyboard.add(InlineKeyboardButton(text="Назад", callback_data=data))
     return keyboard
 
+async def keyboard_organizations(organizations_list: list) -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardMarkup(row_width=1)
+    for organization in organizations_list:
+        if not organization.get("site_url"): continue
+        keyboard.add(InlineKeyboardButton(text=organization.get("name"), url=organization.get("site_url")))
+    keyboard.add(InlineKeyboardButton(f"Назад", callback_data="other"))
+    return keyboard
+
 keyboard_main = ReplyKeyboardMarkup(resize_keyboard=True)
 keyboard_main.add(KeyboardButton("На сегодня"), KeyboardButton("На завтра"))
 keyboard_main.add(KeyboardButton("На послезавтра"), KeyboardButton("По дням"), KeyboardButton("Полностью"))
@@ -40,6 +48,7 @@ keyboard_other.add(InlineKeyboardButton("Расписание другой гр�
 keyboard_other.add(InlineKeyboardButton("Сменить группу", callback_data="change_group"), InlineKeyboardButton("Чат студентов", url="https://t.me/+8WYDQ7AmpfI4ZDVi"))
 keyboard_other.add(InlineKeyboardButton("Одногруппники", callback_data="students"))
 keyboard_other.add(InlineKeyboardButton("Другая группа", callback_data="students_other"))
+keyboard_other.add(InlineKeyboardButton(f"Организации", callback_data="organizations"))
 keyboard_other.add(InlineKeyboardButton("Назад", callback_data="start"))
 
 keyboard_select_teacher_schedule = InlineKeyboardMarkup()

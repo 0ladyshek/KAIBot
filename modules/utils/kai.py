@@ -3,6 +3,7 @@ from config import kai_token
 from yarl import URL
 import json as js
 from bs4 import BeautifulSoup as bs4
+from devtools import debug
 
 class KAI:
     def __init__(self, group: str = '', login: str = '', password: str = ''):
@@ -64,6 +65,9 @@ class KAI:
             if not student: continue
             students.append(f"{i + 1}. {student}")
         return students
+        
+    async def get_organizations(self) -> dict:
+        return (await self.requester(f"/api/organizations"))
         
     async def requester(self, url: str = "/", method: str = "GET", json: dict = {}, params: dict = {}, output: str = "json") -> dict | str | bytes:
         if not params.get("token") and self.token:
