@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, KeyboardBu
 
 async def keyboard_subscribe(channel_name: str) -> InlineKeyboardMarkup:
     keyboard = InlineKeyboardMarkup(row_width=1)
-    keyboard.add(InlineKeyboardButton(text="Подписаться", url=f"https://t.me/{channel_name[:1]}"))
+    keyboard.add(InlineKeyboardButton(text="Подписаться", url=f"https://t.me/{channel_name[1:]}"))
     return keyboard
 
 async def keyboard_back(data: str) -> InlineKeyboardMarkup:
