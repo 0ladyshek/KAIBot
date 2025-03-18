@@ -3,3 +3,5 @@ asyncmy
 lxml
 beautifulsoup4
 devtools
+ics
+cryptography

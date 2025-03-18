@@ -8,5 +8,6 @@ from . import about
 from . import other
 from . import other_schedule
 from . import students_list
+from . import export_calendar
 
-modules = [start, registration, schedule, exams, teachers, back_call, about, other, other_schedule, students_list]
+modules = [start, registration, schedule, exams, teachers, back_call, about, other, other_schedule, students_list, export_calendar]

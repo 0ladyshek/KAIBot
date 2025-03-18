@@ -1,5 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from config import week_days
+from ics import Calendar, Event
+from io import StringIO
 
 async def format_schedule_day(schedule: dict, date: datetime) -> str:
     date_str = date.strftime("%d.%m")
@@ -13,6 +15,32 @@ async def format_schedule_day(schedule: dict, date: datetime) -> str:
         elif lesson['daydate'] and not ("чет" in lesson['daydate'] or "неч" in lesson['daydate']) and date_str not in [date for date in lesson['daydate'].split() if date != "/"]: continue
         result += f"➤* {(lesson['daydate'] if ('чет' not in lesson['daydate'] or 'неч' not in lesson['daydate'] or lesson['daydate'] == 'неч/чет' or lesson['daydate'] == 'чет/неч') else date_str) if lesson['daydate'] else ''}* ⌛*{lesson['daytime']} {lesson['discipltype']}* {lesson['disciplname']} {lesson['auditory']} {lesson['building']} зд.\n"
     return result
+
+async def export_schedule(schedule: dict, days: int) -> str:
+    calendar = Calendar(creator="KAI Schedule Bot")
+    for day in range(days + 1):
+        date = datetime.now() + timedelta(days=day)
+        date_str = date.strftime("%d.%m")
+        date_str_calendar = date.strftime("%Y-%m-%d")
+        week_type = date.isocalendar()[1] % 2
+        day = str(date.weekday() + 1)
+        for lesson in schedule['result']['schedule']:
+            if lesson['daynum'] != day: continue
+            if lesson['daydate'] == "неч/чет" or lesson['daydate'] == "чет/неч": pass
+            elif lesson['daydate'] and ('неч' in lesson['daydate'] or 'чет' in lesson['daydate']) and not ((lesson['daydate'] == "чет" and week_type == 0) or (lesson['daydate'] == "неч" and week_type == 1)): continue
+            elif lesson['daydate'] and not ("чет" in lesson['daydate'] or "неч" in lesson['daydate']) and date_str not in [date for date in lesson['daydate'].split() if date != "/"]: continue
+            start_time = (datetime.strptime(lesson['daytime'], "%H:%M") - timedelta(hours=3)).strftime("%H:%M")
+            event = Event()
+            event.name = f"{lesson['discipltype']} {lesson['disciplname']}"
+            event.begin = f"{date_str_calendar} {start_time}"
+            event.location = f"В {lesson['auditory']} ауд. {lesson['building']} зд."
+            event.description = f"В {lesson['auditory']} ауд. {lesson['building']} зд."
+            event.duration = {"hours": 1, "minutes": 30}
+            calendar.events.add(event)
+    calendar_file = StringIO()
+    calendar_file.write(calendar.serialize())
+    calendar_file.seek(0)
+    return calendar_file
 
 async def format_schedule_full(schedule: dict) -> str:
     result = ""
