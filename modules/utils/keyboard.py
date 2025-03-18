@@ -22,7 +22,7 @@ keyboard_main = ReplyKeyboardMarkup(resize_keyboard=True)
 keyboard_main.add(KeyboardButton("На сегодня"), KeyboardButton("На завтра"))
 keyboard_main.add(KeyboardButton("На послезавтра"), KeyboardButton("По дням"), KeyboardButton("Полностью"))
 keyboard_main.add(KeyboardButton("Четность недели"), KeyboardButton("Экзамены"), KeyboardButton("Преподаватели"))
-keyboard_main.add(KeyboardButton("Разное"), KeyboardButton("Донат"))
+keyboard_main.add(KeyboardButton("Разное"), KeyboardButton("О боте"))
 keyboard_main.add(KeyboardButton("Обратная связь"))
 
 keyboard_registration = InlineKeyboardMarkup()

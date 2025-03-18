@@ -47,7 +47,7 @@ class KAI:
     async def get_schedule_teacher(self, teacher: str) -> dict:
         return (await self.requester(f"/api/schedule_public/teachers/{teacher}"))
         
-    async def filter_group(self, group: str) -> dict:
+    async def filter_group(self, group: str = "") -> dict:
         return (await self.requester(f"/api/schedule_public/groups", params = {"query": group}))
         
     async def get_students_list(self, group_id: str) -> list:
@@ -65,6 +65,17 @@ class KAI:
             if not student: continue
             students.append(f"{i + 1}. {student}")
         return students
+    
+    async def get_students_count(self, group_id: str) -> int:
+        self.session._base_url = URL("https://kai.ru/")
+        self.token = None
+        page = await self.requester("/infoClick/-/info/group", params = {"id": group_id}, output = "text")
+        self.session._base_url = URL("https://schedule-bot.kai.ru/")
+        page = bs4(page, "lxml").find("tbody")
+        if not page: return 0
+        page = page.find_all("tr")
+        if not page: return 0
+        return len(page)
         
     async def get_organizations(self) -> dict:
         return (await self.requester(f"/api/organizations"))

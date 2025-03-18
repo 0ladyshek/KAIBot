@@ -33,6 +33,9 @@ class Maria:
     async def get_users_by_group(self, group: str) -> list:
         return await self.connector(f"SELECT user_id FROM users WHERE group_number = %(group_number)s", {"group_number": group})
     
+    async def get_users(self) -> list:
+        return await self.connector(f"SELECT COUNT(user_id) FROM users")
+    
     async def connector(self, sql: str, args: dict = {}, commit: bool = False):
         async with connect(host=self.hostname, user=self.user, password=self.password, db=self.db, echo=True) as connection:
             async with connection.cursor() as cursor:
