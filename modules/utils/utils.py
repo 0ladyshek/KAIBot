@@ -11,7 +11,7 @@ async def format_schedule_day(schedule: dict, date: datetime) -> str:
     for lesson in schedule['result']['schedule']:
         if lesson['daynum'] != day: continue
         if lesson['daydate'] == "неч/чет" or lesson['daydate'] == "чет/неч": pass
-        elif lesson['daydate'] and ('неч' in lesson['daydate'] or 'чет' in lesson['daydate']) and not ((lesson['daydate'] == "чет" and week_type == 0) or (lesson['daydate'] == "неч" and week_type == 1)): continue
+        elif lesson['daydate'] and ('неч' in lesson['daydate'] or 'чет' in lesson['daydate']) and not (("чет" in lesson['daydate'] and week_type == 0) or ("неч" in lesson['daydate'] and week_type == 1)): continue
         elif lesson['daydate'] and not ("чет" in lesson['daydate'] or "неч" in lesson['daydate']) and date_str not in [date for date in lesson['daydate'].split() if date != "/"]: continue
         result += f"➤* {(lesson['daydate'] if ('чет' not in lesson['daydate'] or 'неч' not in lesson['daydate'] or lesson['daydate'] == 'неч/чет' or lesson['daydate'] == 'чет/неч') else date_str) if lesson['daydate'] else ''}* ⌛*{lesson['daytime']} {lesson['discipltype']}* {lesson['disciplname']} {lesson['auditory']} {lesson['building']} зд.\n"
     return result
@@ -27,7 +27,7 @@ async def export_schedule(schedule: dict, days: int) -> str:
         for lesson in schedule['result']['schedule']:
             if lesson['daynum'] != day: continue
             if lesson['daydate'] == "неч/чет" or lesson['daydate'] == "чет/неч": pass
-            elif lesson['daydate'] and ('неч' in lesson['daydate'] or 'чет' in lesson['daydate']) and not ((lesson['daydate'] == "чет" and week_type == 0) or (lesson['daydate'] == "неч" and week_type == 1)): continue
+            elif lesson['daydate'] and ('неч' in lesson['daydate'] or 'чет' in lesson['daydate']) and not (("чет" in lesson['daydate'] and week_type == 0) or ("неч" in lesson['daydate'] and week_type == 1)): continue
             elif lesson['daydate'] and not ("чет" in lesson['daydate'] or "неч" in lesson['daydate']) and date_str not in [date for date in lesson['daydate'].split() if date != "/"]: continue
             start_time = (datetime.strptime(lesson['daytime'], "%H:%M") - timedelta(hours=3)).strftime("%H:%M")
             event = Event()
